@@ -1,133 +1,298 @@
-﻿
-using System;
+﻿using System;
 
-class Building
+// РОДИТЕЛЬСКИЙ КЛАСС РАСТЕНИЕ
+class Plant
 {
-    // Статическое поле — хранит последний номер здания
-    private static int lastNumber = 0;
+    public string Name { get; set; }
+    public double Height { get; set; }
+    public string Watering { get; set; }
+    public string Light { get; set; }
 
-    // Закрытые поля класса
-    private int number;
-    private double height;
-    private int floors;
-    private int apartments;
-    private int entrances;
-
-    // Метод увеличения номера здания
-    private static int IncreaseNumber()
+    public Plant(string name, double height,
+                 string watering, string light)
     {
-        lastNumber++;
-        return lastNumber;
+        Name = name;
+        Height = height;
+        Watering = watering;
+        Light = light;
     }
 
-    // Конструктор класса
-    public Building()
+    public virtual void PrintInfo()
     {
-        number = IncreaseNumber();
+        Console.WriteLine("Название: " + Name);
+        Console.WriteLine("Высота: " + Height + " м");
+        Console.WriteLine("Полив: " + Watering);
+        Console.WriteLine("Освещение: " + Light);
     }
 
-    // Метод заполнения полей
-    public void SetData(double height, int floors,
-                        int apartments, int entrances)
+    public virtual void WaterPlant()
     {
-        if (height <= 0 || floors <= 0 ||
-            apartments <= 0 || entrances <= 0)
-        {
-            Console.WriteLine("Ошибка: значения должны быть больше нуля!");
-            return;
-        }
-
-        this.height = height;
-        this.floors = floors;
-        this.apartments = apartments;
-        this.entrances = entrances;
+        Console.WriteLine("Растение " + Name + " полито.");
     }
 
-    // Методы получения значений полей
-    public int GetNumber()
+    public virtual void Prune()
     {
-        return number;
+        Console.WriteLine("Растение " + Name + " обрезано.");
     }
 
-    public double GetHeight()
+    public virtual void Transplant()
     {
-        return height;
+        Console.WriteLine("Растение " + Name + " пересажено.");
     }
 
-    public int GetFloors()
+    public virtual void ShowCareSchedule()
     {
-        return floors;
+        Console.WriteLine("График ухода за растением:");
+        Console.WriteLine("- Полив: " + Watering);
+        Console.WriteLine("- Освещение: " + Light);
     }
 
-    public int GetApartments()
+    public virtual double CalculateFertilizer()
     {
-        return apartments;
-    }
-
-    public int GetEntrances()
-    {
-        return entrances;
-    }
-
-    // Вычисление высоты одного этажа
-    public double CalculateFloorHeight()
-    {
-        return height / floors;
-    }
-
-    // Вычисление количества квартир в одном подъезде
-    public double CalculateApartmentsPerEntrance()
-    {
-        return (double)apartments / entrances;
-    }
-
-    // Вычисление количества квартир на одном этаже
-    public double CalculateApartmentsPerFloor()
-    {
-        return (double)apartments / floors;
-    }
-
-    // Вывод информации о здании
-    public void PrintInfo()
-    {
-        Console.WriteLine("Номер здания: " + GetNumber());
-        Console.WriteLine("Высота: " + GetHeight() + " м");
-        Console.WriteLine("Количество этажей: " + GetFloors());
-        Console.WriteLine("Количество квартир: " + GetApartments());
-        Console.WriteLine("Количество подъездов: " + GetEntrances());
-
-        Console.WriteLine("Высота одного этажа: " +
-                          CalculateFloorHeight() + " м");
-
-        Console.WriteLine("Квартир в одном подъезде: " +
-                          CalculateApartmentsPerEntrance());
-
-        Console.WriteLine("Квартир на одном этаже: " +
-                          CalculateApartmentsPerFloor());
+        return 0;
     }
 }
 
+
+// КЛАСС ЦВЕТОК
+class Flower : Plant
+{
+    public string Color { get; set; }
+
+    // Первый конструктор
+    public Flower(string name, double height)
+        : base(name, height, "2 раза в неделю", "Солнечный свет")
+    {
+        Color = "Красный";
+    }
+
+    // Второй конструктор
+    public Flower(string name, double height, string color,
+                  string watering, string light)
+        : base(name, height, watering, light)
+    {
+        Color = color;
+    }
+
+    public override void PrintInfo()
+    {
+        base.PrintInfo();
+        Console.WriteLine("Цвет: " + Color);
+    }
+
+    public override void WaterPlant()
+    {
+        Console.WriteLine("Цветок " + Name + " полит.");
+    }
+
+    public override void Prune()
+    {
+        Console.WriteLine("У цветка " + Name + " удалены увядшие листья.");
+    }
+
+    public override void Transplant()
+    {
+        Console.WriteLine("Цветок " + Name + " пересажен.");
+    }
+
+    public override void ShowCareSchedule()
+    {
+        Console.WriteLine("График ухода за цветком:");
+        Console.WriteLine("- Полив: " + Watering);
+        Console.WriteLine("- Освещение: " + Light);
+        Console.WriteLine("- Удаление увядших бутонов.");
+    }
+
+    public override double CalculateFertilizer()
+    {
+        return 30;
+    }
+}
+
+
+// КЛАСС КУСТАРНИК
+class Bush : Plant
+{
+    public string BushType { get; set; }
+
+    // Первый конструктор
+    public Bush(string name, double height)
+        : base(name, height, "1 раз в неделю", "Полутень")
+    {
+        BushType = "Декоративный";
+    }
+
+    // Второй конструктор
+    public Bush(string name, double height, string bushType,
+                string watering, string light)
+        : base(name, height, watering, light)
+    {
+        BushType = bushType;
+    }
+
+    public override void PrintInfo()
+    {
+        base.PrintInfo();
+        Console.WriteLine("Тип кустарника: " + BushType);
+    }
+
+    public override void WaterPlant()
+    {
+        Console.WriteLine("Кустарник " + Name + " полит.");
+    }
+
+    public override void Prune()
+    {
+        Console.WriteLine("Кустарник " + Name + " подстрижен.");
+    }
+
+    public override void Transplant()
+    {
+        Console.WriteLine("Кустарник " + Name +
+                          " пересажен на новое место.");
+    }
+
+    public override void ShowCareSchedule()
+    {
+        Console.WriteLine("График ухода за кустарником:");
+        Console.WriteLine("- Полив: " + Watering);
+        Console.WriteLine("- Освещение: " + Light);
+        Console.WriteLine("- Обрезка: один раз в месяц.");
+    }
+
+    public override double CalculateFertilizer()
+    {
+        return 50;
+    }
+}
+
+
+// КЛАСС ДЕРЕВО
+class Tree : Plant
+{
+    private int age;// Первый конструктор
+    public Tree(string name, double height)
+        : base(name, height, "1 раз в неделю", "Солнечный свет")
+    {
+        age = 5;
+    }
+
+    // Второй конструктор
+    public Tree(string name, double height, int age,
+                string watering, string light)
+        : base(name, height, watering, light)
+    {
+        this.age = age;
+    }
+
+    public int Age
+    {
+        get { return age; }
+        set
+        {
+            if (value > 0)
+                age = value;
+        }
+    }
+
+    public override void PrintInfo()
+    {
+        base.PrintInfo();
+        Console.WriteLine("Возраст: " + Age + " лет");
+    }
+
+    public override void WaterPlant()
+    {
+        Console.WriteLine("Дерево " + Name + " политo.");
+    }
+
+    public override void Prune()
+    {
+        Console.WriteLine("У дерева " + Name +
+                          " обрезаны сухие ветви.");
+    }
+
+    public override void Transplant()
+    {
+        Console.WriteLine("Дерево " + Name +
+                          " пересажено.");
+    }
+
+    public override void ShowCareSchedule()
+    {
+        Console.WriteLine("График ухода за деревом:");
+        Console.WriteLine("- Полив: " + Watering);
+        Console.WriteLine("- Освещение: " + Light);
+        Console.WriteLine("- Обрезка ветвей: весной.");
+    }
+
+    public override double CalculateFertilizer()
+    {
+        return 150;
+    }
+}
+
+
+// ГЛАВНАЯ ПРОГРАММА
 class Program
 {
     static void Main()
     {
-        // Создаём первое здание
-        Building building1 = new Building();
+        Console.WriteLine("ДОМАШНЕЕ ЗАДАНИЕ 7.1");
+        Console.WriteLine("Тема: Виды растений в саду");
+        Console.WriteLine("--------------------------------");
 
-        building1.SetData(30, 10, 100, 4);
+        // Создание объектов
+        Plant[] plants =
+        {
+            new Flower("Роза", 0.5),
+            new Bush("Сирень", 2.0),
+            new Tree("Яблоня", 4.5),
 
-        // Создаём второе здание
-        Building building2 = new Building();
+            new Flower("Тюльпан", 0.3, "Желтый",
+                       "3 раза в неделю", "Солнечный свет"),
 
-        building2.SetData(45, 15, 180, 6);
+            new Bush("Смородина", 1.5, "Плодовый",
+                     "2 раза в неделю", "Полутень"),
 
-        // Вывод информации
-        Console.WriteLine("ИНФОРМАЦИЯ О ЗДАНИЯХ");
+            new Tree("Береза", 8.0, 12,
+                     "1 раз в неделю", "Солнечный свет")
+        };
 
-        Console.WriteLine("\nПервое здание:");
-        building1.PrintInfo();
+        // Работа с растениями
+        foreach (Plant plant in plants)
+        {
+            Console.WriteLine("\n==============================");
 
-        Console.WriteLine("\nВторое здание:");
-        building2.PrintInfo();
+            plant.PrintInfo();
+
+            Console.WriteLine("\nДействия по уходу:");
+
+            // Полиморфизм
+            plant.WaterPlant();
+            plant.Prune();
+            plant.Transplant();
+
+            plant.ShowCareSchedule();
+
+            Console.WriteLine("Необходимое удобрение: " +
+                              plant.CalculateFertilizer() + " г");
+        }
+
+        // Демонстрация изменения свойства
+        Console.WriteLine("\n==============================");
+        Console.WriteLine("Изменение свойств растения:");
+
+        Flower rose = new Flower("Роза", 0.5);
+
+        Console.WriteLine("Старая высота: " + rose.Height);
+
+        rose.Height = 0.8;
+        rose.Name = "Красная роза";
+
+        Console.WriteLine("Новое название: " + rose.Name);
+        Console.WriteLine("Новая высота: " + rose.Height);
+
+        Console.WriteLine("\nПрограмма завершена.");
     }
 }
